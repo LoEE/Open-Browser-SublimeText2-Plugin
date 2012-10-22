@@ -7,7 +7,10 @@ class OpenBrowserCommand(sublime_plugin.TextCommand):
 
 		selection = ""
 		for region in self.view.sel():
-			selection += self.view.substr(region)
+			if not region.empty():
+				selection += self.view.substr(region)
+			else:
+				selection += self.view.substr(self.view.extract_scope(region.begin()))
 		try:
 			url = url % selection
 		except TypeError:
